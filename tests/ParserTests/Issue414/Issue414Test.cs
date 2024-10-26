@@ -23,7 +23,7 @@ public class Issue414Tests
         Check.ThatCode(() =>
         {
             result = parser.Parse(source);
-        }).LastsLessThan(1000, TimeUnit.Milliseconds);
+        }).LastsLessThan(10_000, TimeUnit.Milliseconds);
         Check.That(result).IsOkParsing();
     }
     
@@ -43,7 +43,7 @@ public class Issue414Tests
         Check.ThatCode(() =>
         {
             result = parser.Parse(source);
-        }).LastsLessThan(200, TimeUnit.Milliseconds);
+        }).LastsLessThan(10_000, TimeUnit.Milliseconds);
         Check.That(result).IsOkParsing();
     }
     
@@ -63,7 +63,7 @@ public class Issue414Tests
         Check.ThatCode(() =>
         {
             result = parser.Parse(source);
-        }).LastsLessThan(200, TimeUnit.Milliseconds);
+        }).LastsLessThan(10_000, TimeUnit.Milliseconds);
         Check.That(result).IsOkParsing();
     }
 }

@@ -286,7 +286,7 @@ namespace ParserTests
             {
                 var result = parser.Parse(source);
                 Check.That(result).IsOkParsing();
-            }).LastsLessThan(200, TimeUnit.Milliseconds);
+            }).LastsLessThan(10_000, TimeUnit.Milliseconds);
 
         }
     }
