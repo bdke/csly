@@ -102,7 +102,6 @@ namespace sly.parser.llparser.bnf
             if (result == null)
             {
                 result = new SyntaxParseResult<IN>();
-                errors.Sort();
 
                 if (errors.Count > 0)
                 {

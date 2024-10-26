@@ -30,13 +30,20 @@ namespace sly.parser
         public void AddErrors(IList<UnexpectedTokenSyntaxError<IN>> errors)
         {
             InitErrors();
-            Errors.AddRange(errors);
+            foreach (var error in errors)
+            {
+                AddError(error);
+            }
         }
 
         public void AddError(UnexpectedTokenSyntaxError<IN> error)
         {
             InitErrors();
-            Errors.Add(error);
+            if (!Errors.Contains(error))
+            {
+                // #493 : dedup errors 
+                Errors.Add(error);
+            }
         }
 
         public IList<UnexpectedTokenSyntaxError<IN>> GetErrors() => Errors;
