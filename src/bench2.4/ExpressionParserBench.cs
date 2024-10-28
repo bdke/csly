@@ -14,7 +14,7 @@ using sly.parser;
 using sly.parser.generator;
 using bench.json;
 using bench.json.model;
-
+using bench.simpleExpressionParser;
 
 
 namespace bench
@@ -23,7 +23,7 @@ namespace bench
     [MemoryDiagnoser]
     
     [Config(typeof(Config))]
-    public class JsonParserBench
+    public class ExpressionParserBench
     {
 
 
@@ -39,9 +39,9 @@ namespace bench
             }
         }
 
-        private Parser<JsonTokenGeneric,JSon> BenchedParser;
+        private Parser<GenericExpressionToken,double> BenchedParser;
 
-        private string content = "";
+        private string content = "1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18*19/20";
 
         [GlobalSetup]
         public void Setup()
@@ -50,8 +50,8 @@ namespace bench
 //            Console.ReadLine();
             content = File.ReadAllText("test.json");
             Console.WriteLine("json read.");
-            var jsonParser = new EbnfJsonGenericParser();
-            var builder = new ParserBuilder<JsonTokenGeneric, JSon>();
+            var jsonParser = new GenericSimpleExpressionParser();
+            var builder = new ParserBuilder<GenericExpressionToken, double>();
             
             var result = builder.BuildParser(jsonParser, ParserType.EBNF_LL_RECURSIVE_DESCENT, "root");
             Console.WriteLine("parser built.");
@@ -72,7 +72,7 @@ namespace bench
 
         [Benchmark]
         
-        public void TestJson()
+        public void TestExpression()
         {
             if (BenchedParser == null)
             {

@@ -107,7 +107,7 @@ namespace sly.parser
                 }
 
                 string value = UnexpectedToken.Value;
-                string label = UnexpectedToken.IsExplicit ? value : UnexpectedToken.Label.ToString();
+                string label = UnexpectedToken.IsExplicit ? value : (UnexpectedToken.Label?.ToString() ?? "");
                 return I18N.Instance.GetText(_i18N,i18NMessage, $"{value} ({UnexpectedToken.Position.ToString()})", label, expecting.ToString());
             }
         }

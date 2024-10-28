@@ -25,43 +25,43 @@ public class SlowOnBadParseEos
         return value;
     }
 
-    [Infix("IN", Associativity.Right, 71)]
+    [Right("IN",  71)]
     public object IN(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("LIKE", Associativity.Right, 70)]
+    [Right("LIKE", 70)]
     public object LIKE(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("ARITH_TIMES", Associativity.Left, 40)]
+    [Left("ARITH_TIMES", 40)]
     public object ARITH_TIMES(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("ARITH_DIVIDE", Associativity.Left, 40)]
+    [Left("ARITH_DIVIDE", 40)]
     public object ARITH_DIVIDE(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("ARITH_MODULO", Associativity.Left, 38)]
+    [Left("ARITH_MODULO", 38)]
     public object ARITH_MODULO(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("ARITH_PLUS", Associativity.Left, 30)]
+    [Left("ARITH_PLUS", 30)]
     public object ARITH_PLUS(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("ARITH_MINUS", Associativity.Left, 30)]
+    [Left("ARITH_MINUS", 30)]
     public object ARITH_MINUS(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
@@ -73,61 +73,61 @@ public class SlowOnBadParseEos
         return value;
     }
 
-    [Infix("COMP_EQUALS", Associativity.Left, 25)]
+    [Left("COMP_EQUALS", 25)]
     public object COMP_EQUALS(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("COMP_NOTEQUALS", Associativity.Left, 24)]
+    [Left("COMP_NOTEQUALS", 24)]
     public object COMP_NOTEQUALS(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("COMP_LT", Associativity.Left, 23)]
+    [Left("COMP_LT", 23)]
     public object COMP_LT(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("COMP_GT", Associativity.Left, 22)]
+    [Left("COMP_GT", 22)]
     public object COMP_GT(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("COMP_LTE", Associativity.Left, 21)]
+    [Left("COMP_LTE", 21)]
     public object COMP_LTE(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("COMP_GTE", Associativity.Left, 20)]
+    [Left("COMP_GTE", 20)]
     public object COMP_GTE(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("IS", Associativity.Left, 15)]
+    [Left("IS", 15)]
     public object IS(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("AND", Associativity.Left, 12)]
+    [Left("AND", 12)]
     public object AND(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("OR", Associativity.Left, 11)]
+    [Left("OR", 11)]
     public object OR(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;
     }
 
-    [Infix("XOR", Associativity.Left, 10)]
+    [Left("XOR", 10)]
     public object XOR(object left, Token<SlowOnBadParseEosToken> oper, object right)
     {
         return left;

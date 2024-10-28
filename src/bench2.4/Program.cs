@@ -11,7 +11,12 @@ namespace bench
 
         private static void BenchJson() {
            
-            var summary = BenchmarkRunner.Run<JsonParserBench>();
+            ExpressionParserBench bench = new ExpressionParserBench();
+            bench.Setup();
+            bench.TestExpression();
+            
+            //var summary = BenchmarkRunner.Run<JsonParserBench>();
+            var summary = BenchmarkRunner.Run<ExpressionParserBench>();
 
         }
         static void Main(string[] args)

@@ -42,10 +42,14 @@ public class Program
         string source = "FUNCTIONCALL([Identifier]";
 
         var baseLine = GetParser(new SlowOnBadParseEos());
-        //var reducedPrecedences = GetParser(new SlowOnBadParseEosReducedPrecedences());
-        var baseTime = Test(baseLine, source);
-        //var reducedTime = Test(reducedPrecedences, source);
-        //var delta = (((double)reducedTime - (double)baseTime) / (double)baseTime)*100; 
-        //Console.WriteLine($"base : {baseTime} ms, reduced : {reducedTime} ms. delta:{(delta>0 ? "+" : "")}{delta:##.00}%");
+        var reducedPrecedences = GetParser(new SlowOnBadParseEosReducedPrecedences());
+        // for (int i = 0; i < 1000; i++)
+        // {
+            var baseTime = Test(baseLine, source);    
+        // }
+        
+        var reducedTime = Test(reducedPrecedences, source);
+        var delta = (((double)reducedTime - (double)baseTime) / (double)baseTime)*100; 
+        Console.WriteLine($"base : {baseTime} ms, reduced : {reducedTime} ms. delta:{(delta>0 ? "+" : "")}{delta:##.00}%");
     }
 }
