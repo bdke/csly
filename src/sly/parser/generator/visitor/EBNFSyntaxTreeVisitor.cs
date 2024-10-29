@@ -4,6 +4,7 @@ using System.Reflection;
 using sly.lexer;
 using sly.parser.parser;
 using sly.parser.syntax.tree;
+using System;
 
 namespace sly.parser.generator.visitor
 {
@@ -87,51 +88,59 @@ namespace sly.parser.generator.visitor
             var result = SyntaxVisitorResult<IN, OUT>.NoneResult();
             if (node.Visitor != null || node.IsByPassNode)
             {
+                int parametersArrayLength = node.Children.Count + (context is NoContext ? 0 : 1); 
+                var parameters = new object[parametersArrayLength];
                 
-                
-                var args = new List<object>();
+                int parametersCount = 0;
 
                 foreach (var n in node.Children)
                 {
                     var v = Visit(n, context);
-                    
-                    if (v.IsToken)
+                    if (v.IsToken && !n.Discarded)
                     {
-                        if (!n.Discarded) args.Add(v.TokenResult);
+                        parameters[parametersCount] = v.TokenResult;
+                        parametersCount++;
                     }
                     else if (v.IsValue)
                     {
-                        args.Add(v.ValueResult);
+                        parameters[parametersCount] = v.ValueResult;
+                        parametersCount++;
                     }
                     else if (v.IsOption)
                     {
-                        args.Add(v.OptionResult);
+                        parameters[parametersCount] = v.OptionResult;
+                        parametersCount++;
                     }
                     else if (v.IsOptionGroup)
                     {
-                        args.Add(v.OptionGroupResult);
+                        parameters[parametersCount] = v.OptionGroupResult;
+                        parametersCount++;
                     }
                     else if (v.IsGroup)
                     {
-                        args.Add(v.GroupResult);
+                        parameters[parametersCount] = v.GroupResult;
+                        parametersCount++;
                     }
                     else if (v.IsTokenList)
                     {
-                        args.Add(v.TokenListResult);
+                        parameters[parametersCount] = v.TokenListResult;
+                        parametersCount++;
                     }
                     else if (v.IsValueList)
                     {
-                        args.Add(v.ValueListResult);
+                        parameters[parametersCount] = v.ValueListResult;
+                        parametersCount++;
                     }
                     else if (v.IsGroupList)
                     {
-                        args.Add(v.GroupListResult);
+                        parameters[parametersCount] = v.GroupListResult;
+                        parametersCount++;
                     }
                 }
 
                 if (node.IsByPassNode)
                 {
-                    result = SyntaxVisitorResult<IN, OUT>.NewValue((OUT)args[0]);
+                    result = SyntaxVisitorResult<IN, OUT>.NewValue((OUT)parameters[0]);
                 }
                 else
                 {
@@ -140,11 +149,13 @@ namespace sly.parser.generator.visitor
                     {
                         if (!(context is NoContext))
                         {
-                            args.Add(context);
+                            parameters[parametersCount] = context;
+                            parametersCount++;
                         }
 
                         method = node.Visitor;
-                        var t = method.Invoke(ParserVsisitorInstance, args.ToArray());
+                        Array.Resize(ref parameters, parametersCount);
+                        var t = method.Invoke(ParserVsisitorInstance, parameters);
                         var res = (OUT) t;
                         result = SyntaxVisitorResult<IN, OUT>.NewValue(res);
                     }
