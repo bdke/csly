@@ -27,7 +27,7 @@ public class Issue495Tests
     {
         var parser = GetParser();
         Check.That(parser).IsNotNull();
-        var parsed = parser.Parse("test = \"3 3\"");
+        var parsed = parser.Parse("test = \"3 3\";");
         Check.That(parsed).IsOkParsing();
     } 
     

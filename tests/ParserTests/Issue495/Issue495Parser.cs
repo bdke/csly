@@ -13,7 +13,7 @@ public class Issue495Parser
     }
 
     [Production("STRING: StartQuote StringValue* EndQuote")]
-    public object stringValue(Token<Issue495Token> open, Token<Issue495Token> value, Token<Issue495Token> close)
+    public object stringValue(Token<Issue495Token> open, List<Token<Issue495Token>> values, Token<Issue495Token> close)
     {
         return null;
     }
