@@ -7,13 +7,13 @@ namespace ParserTests.Issue495;
 
 public class Issue495Tests
 {
-    public Parser<Issue495Token,object> _parser { get; set; }
+    public Parser<Issue495Token,string> _parser { get; set; }
 
-    public Parser<Issue495Token, object> GetParser()
+    public Parser<Issue495Token, string> GetParser()
     {
         if (_parser == null)
         {
-            ParserBuilder<Issue495Token, object> builder = new ParserBuilder<Issue495Token, object>("en");
+            ParserBuilder<Issue495Token, string> builder = new ParserBuilder<Issue495Token, string>("en");
             var build = builder.BuildParser(new Issue495Parser(), ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
             Check.That(build).IsOk();
             _parser = build.Result;
@@ -29,6 +29,7 @@ public class Issue495Tests
         Check.That(parser).IsNotNull();
         var parsed = parser.Parse("test = \"3 3\";");
         Check.That(parsed).IsOkParsing();
+        Check.That(parsed.Result).IsEqualTo("test=3 3");
     } 
     
 }

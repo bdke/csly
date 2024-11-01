@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using sly.lexer;
 using sly.parser.generator;
 
@@ -13,21 +14,21 @@ public class Issue495Parser
     }
 
     [Production("STRING: StartQuote StringValue* EndQuote")]
-    public object stringValue(Token<Issue495Token> open, List<Token<Issue495Token>> values, Token<Issue495Token> close)
+    public string stringValue(Token<Issue495Token> open, List<Token<Issue495Token>> values, Token<Issue495Token> close)
     {
-        return null;
+        return string.Join(", ", values.Select(x => x.Value.ToString()));
     }
 
     [Production("statement : Identifier Assign STRING End")]
-    public object Statement(Token<Issue495Token> id, Token<Issue495Token> assign, object value,
+    public string Statement(Token<Issue495Token> id, Token<Issue495Token> assign, string value,
         Token<Issue495Token> end)
     {
-        return null;
+        return $"{id.Value}{assign.Value}{value}";
     }
 
     [Production("program: statement*")]
-    public object Program(List<object> statements)
+    public string Program(List<string> statements)
     {
-        return null;
+        return string.Join("\n", statements);
     }
 }
