@@ -20,6 +20,7 @@ public class Issue495Parser
     }
 
     [Production("statement : Identifier Assign STRING End")]
+    [Production("statement : '$'[d] Identifier Assign STRING End")]
     public string Statement(Token<Issue495Token> id, Token<Issue495Token> assign, string value,
         Token<Issue495Token> end)
     {
