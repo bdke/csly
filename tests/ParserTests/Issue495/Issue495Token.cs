@@ -96,6 +96,10 @@ public enum Issue495Token
     [Mode("defaultString")]
     [Pop]
     EndQuote,
+    
+    [UpTo("\"")]
+    [Mode("defaultString")]
+    StringValue,
     #endregion
 
     #region Keywords
@@ -144,9 +148,7 @@ public enum Issue495Token
     [AlphaNumDashId]
     Identifier,
 
-    [UpTo("\"")]
-    [Mode("defaultString")]
-    StringValue,
+    
 
     Variable,
     Namespace,

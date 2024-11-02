@@ -22,6 +22,7 @@ using ParserTests;
 using ParserTests.Issue239;
 using ParserTests.Issue332;
 using ParserTests.Issue414;
+using ParserTests.Issue495;
 using ParserTests.lexer;
 using simpleExpressionParser;
 using SimpleTemplate;
@@ -1351,6 +1352,7 @@ while a < 10 do
         }
         private static void Main(string[] args)
         {
+            TestIssue495();
             //testGenericLexerJson();
             // TestIssue487();
             //BenchSimpleExpression();
@@ -1372,7 +1374,7 @@ while a < 10 do
             //testJSONEscaped();
             //testJSONNotEscaped();
             // testProfileJSONEscaping(escape:true);
-            testProfileJSONEscaping(escape:false);
+            //testProfileJSONEscaping(escape:false);
             //TestGrammarParser();
             // TestGraphViz();
             // TestGraphViz();
@@ -1802,6 +1804,35 @@ else
               {
                   Console.Write(lexed.Error);
               }
+          }
+
+          private static void TestIssue495()
+          {
+              Parser<Issue495Token, string> parser;
+
+              ParserBuilder<Issue495Token, string> builder = new ParserBuilder<Issue495Token, string>("en");
+              var build = builder.BuildParser(new Issue495Parser(), ParserType.EBNF_LL_RECURSIVE_DESCENT, "program");
+              Check.That(build).IsOk();
+              parser = build.Result;
+
+              Check.That(parser).IsNotNull();
+              Check.That(parser.Lexer).IsNotNull();
+              Check.That(parser.Lexer).IsInstanceOf<GenericLexer<Issue495Token>>();
+              var lexer = parser.Lexer as GenericLexer<Issue495Token>;
+              string source = "test = \"3 3\";";
+              var tokenized = lexer.Tokenize(source);
+              Check.That(tokenized).IsOkLexing();
+              var tokens = tokenized.Tokens.MainTokens();
+              Check.That(tokens).CountIs(7);
+              var stringValue = tokens[3];
+              Check.That(stringValue).IsNotNull();
+              Check.That(stringValue.TokenID).IsEqualTo(Issue495Token.StringValue);
+                
+
+              var parsed = parser.Parse(source);
+              Check.That(parsed).IsOkParsing();
+              Check.That(parsed.Result).IsEqualTo("test=3 3");
+
           }
     }
 
