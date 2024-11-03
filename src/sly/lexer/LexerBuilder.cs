@@ -446,8 +446,17 @@ namespace sly.lexer
             var subLexers = GetSubLexers(attributes);
             foreach (var subLexer in subLexers)
             {
-                var x = BuildGenericLexer(subLexer.Value, extensionBuilder, result, lang, explicitTokens);
-                var currentGenericLexer = x.Result as GenericLexer<IN>;
+                BuildResult<ILexer<IN>> b = null;
+                if (subLexer.Key == ModeAttribute.DefaultLexerMode)
+                {
+                    b = BuildGenericLexer(subLexer.Value, extensionBuilder, result, lang, explicitTokens);
+                }
+                else
+                {
+                    b = BuildGenericLexer(subLexer.Value, extensionBuilder, result, lang, null);
+                }
+
+                var currentGenericLexer = b.Result as GenericLexer<IN>;
                 if (genLexer == null)
                 {
                     genLexer = currentGenericLexer;
