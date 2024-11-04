@@ -42,7 +42,7 @@ namespace csly.indentedWhileLang.parser
 
         [Lexeme(GenericToken.KeyWord, "PRINT")] [Lexeme(GenericToken.KeyWord, "print")]
         PRINT = 12,
-        
+
         [Lexeme(GenericToken.KeyWord, "RETURN")] [Lexeme(GenericToken.KeyWord, "return")]
         RETURN = 13,
 
@@ -50,9 +50,9 @@ namespace csly.indentedWhileLang.parser
 
         #region literals 20 -> 29
 
-        [Lexeme(GenericToken.Identifier,IdentifierType.AlphaNumericDash)] IDENTIFIER = 20,
-
-        [Lexeme(GenericToken.String)] STRING = 21,
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
+        [Lexeme(GenericToken.Identifier, IdentifierType.AlphaNumericDash)]
+        IDENTIFIER = 20,
 
         [Lexeme(GenericToken.Int)] INT = 22,
 
@@ -88,16 +88,40 @@ namespace csly.indentedWhileLang.parser
 
         #region sugar 50 ->
 
-        // [Lexeme(GenericToken.SugarToken, "(")] LPAREN = 50,
-        //
-        // [Lexeme(GenericToken.SugarToken, ")")] RPAREN = 51,
 
         [Lexeme(GenericToken.SugarToken, ";")] SEMICOLON = 52,
 
 
-        [SingleLineComment("#")]
-        COMMENT=1236
+        [SingleLineComment("#")] COMMENT = 1236,
 
         #endregion
+
+        #region fstring 100 ->
+
+        [Push("fstringExpression")] [Mode("fstring")] [Sugar("{")]
+        OPEN_FSTRING_EXPPRESSION = 100,
+
+        [Pop] [Mode("fstringExpression")] [Sugar("}")]
+        CLOSE_FSTRING_EXPPRESSION = 101,
+
+        [Sugar("$\"")]
+        [Push("fstring")] 
+        OPEN_FSTRING,
+
+        [Sugar("\"")] 
+        [Mode("fstring")]
+        [Pop]  
+        CLOSE_FSTRING,
+
+        
+        [Mode("fstring")]
+        [UpTo("{","\"")]
+        FSTRING_CONTENT
+        
+        
+        #endregion
+
+
+
     }
 }

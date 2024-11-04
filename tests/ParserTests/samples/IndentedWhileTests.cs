@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using csly.indentedWhileLang.compiler;
 using csly.indentedWhileLang.parser;
 using csly.whileLang.interpreter;
@@ -147,9 +148,9 @@ return r";
             var program = @"
 # TestIfThenElse
 if true then
-    a := ""hello""
+    a := $""hello""
 else
-    b := ""world""
+    b := $""world""
 ";
             var result = parser.Parse(program);
             Check.That(result).IsOkParsing();
@@ -205,6 +206,44 @@ return a
             Check.That(f).IsEqualTo(1);
         }
 
+
+        [Fact]
+        public void TestFString()
+        {
+            var buildResult = buildParser();
+            var parser = buildResult.Result;
+            var program = @"
+# fstring
+v1 := 1
+v2 := 2
+fstring := $""{v1} - content - {v2} - end""
+";
+            Console.WriteLine("==================================");
+            Console.WriteLine("=== parse fstring");
+            Console.WriteLine("==================================");
+            Console.WriteLine();
+            var result = parser.Parse(program);
+            Check.That(result).IsOkParsing();
+            Check.That(result.Result).IsNotNull();
+            Check.That(result.Result).IsInstanceOf<SequenceStatement>();
+            SequenceStatement seq = result.Result as SequenceStatement;
+            Check.That(seq.Count).IsEqualTo(3);
+            var fstringAssign = seq.Get(2) as AssignStatement;
+            Check.That(fstringAssign).IsNotNull();
+            Check.That(fstringAssign.VariableName).IsEqualTo("fstring");
+            Check.That(fstringAssign.Value).IsInstanceOf<FString>();
+            var fString = fstringAssign.Value as FString;
+            Check.That(fString).IsNotNull();
+            Check.That(fString.Elements).CountIs(4);
+            Check.That(fString.Elements[0]).IsInstanceOf<FStringElement>();
+            Check.That((fString.Elements[0] as FStringElement).IsVariable);
+            Check.That(fString.Elements[1]).IsInstanceOf<FStringElement>();
+            Check.That((fString.Elements[1] as FStringElement).IsStringElement);
+            Check.That(fString.Elements[2]).IsInstanceOf<FStringElement>();
+            Check.That((fString.Elements[2] as FStringElement).IsVariable);
+            Check.That(fString.Elements[3]).IsInstanceOf<FStringElement>();
+            Check.That((fString.Elements[3] as FStringElement).IsStringElement);
+        }
 
         [Fact]
         public void TestInfiniteWhile()
