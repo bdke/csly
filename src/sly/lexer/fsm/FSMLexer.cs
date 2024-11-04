@@ -38,7 +38,6 @@ namespace sly.lexer.fsm
             Callbacks = new Dictionary<int, NodeCallback<N>>();
             IgnoreWhiteSpace = false;
             IgnoreEOL = false;
-            AggregateEOL = false;
             WhiteSpaces = new List<char>();
         }
 
@@ -48,11 +47,7 @@ namespace sly.lexer.fsm
 
         public bool IgnoreEOL { get; set; }
 
-        public bool AggregateEOL { get; set; }
-
         public bool IndentationAware { get; set; }
-
-        public string Indentation { get; set; }
 
 
         private Dictionary<int, NodeCallback<N>> Callbacks { get; }
@@ -152,26 +147,6 @@ namespace sly.lexer.fsm
         public FSMMatch<N> Run(string source, LexerPosition position)
         {
             return Run(new ReadOnlyMemory<char>(source.ToCharArray()), position);
-        }
-
-
-        public int ComputeIndentationSize(ReadOnlyMemory<char> source, int index)
-        {
-            int count = 0;
-            if (index + Indentation.Length > source.Length)
-            {
-                return 0;
-            }
-
-            string id = source.Slice(index, Indentation.Length).ToString();
-            while (id == Indentation)
-            {
-                count++;
-                index += Indentation.Length;
-                id = source.Slice(index, Indentation.Length).ToString();
-            }
-
-            return count;
         }
 
         public List<char> GetIndentations(ReadOnlyMemory<char> source, int index)
