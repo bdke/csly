@@ -129,8 +129,8 @@ r:=1
 i:=1
 while i < 11 do 
     r := r * i
-    print ""r="".r
-    print ""i="".i
+    print $""r="".r
+    print $""i="".i
     i := i + 1
 return r";
             var compiler = new IndentedWhileCompiler();
@@ -170,8 +170,15 @@ else
             Check.That(thenBlock.Get(0)).IsInstanceOf<AssignStatement>();
             var thenAssign = thenBlock.Get(0) as AssignStatement;
             Check.That(thenAssign.VariableName).IsEqualTo("a");
-            Check.That(thenAssign.Value).IsInstanceOf<StringConstant>();
-            Check.That((thenAssign.Value as StringConstant).Value).IsEqualTo("hello");
+            Check.That(thenAssign.Value).IsInstanceOf<FString>();
+            var fstring = thenAssign.Value as FString;
+            Check.That(fstring).IsNotNull();
+            Check.That(fstring.Elements).CountIs(1);
+            Check.That(fstring.Elements[0]).IsInstanceOf<FStringElement>();
+            var element = fstring.Elements[0] as FStringElement;
+            Check.That(element).IsNotNull();
+            Check.That(element.IsStringElement).IsTrue();
+            Check.That(element.StringElement.Value).IsEqualTo("hello");
 
             Check.That(si.ElseStmt).IsInstanceOf<SequenceStatement>();
             var elseBlock = si.ElseStmt as SequenceStatement;
@@ -179,8 +186,15 @@ else
             Check.That(elseBlock.Get(0)).IsInstanceOf<AssignStatement>();
             var elseAssign = elseBlock.Get(0) as AssignStatement;
             Check.That(elseAssign.VariableName).IsEqualTo("b");
-            Check.That(elseAssign.Value).IsInstanceOf<StringConstant>();
-            Check.That((elseAssign.Value as StringConstant).Value).IsEqualTo("world");
+            Check.That(elseAssign.Value).IsInstanceOf<FString>();
+            fstring = elseAssign.Value as FString;
+            Check.That(fstring).IsNotNull();
+            Check.That(fstring.Elements).CountIs(1);
+            Check.That(fstring.Elements[0]).IsInstanceOf<FStringElement>();
+            element = fstring.Elements[0] as FStringElement;
+            Check.That(element).IsNotNull();
+            Check.That(element.IsStringElement).IsTrue();
+            Check.That(element.StringElement.Value).IsEqualTo("world");
         }
 
         [Fact]
@@ -196,7 +210,7 @@ if true then
         a := 2
 else
     a := 3
-    b := ""world""
+    b := $""world""
 return a
 ";
             var compiler = new IndentedWhileCompiler();

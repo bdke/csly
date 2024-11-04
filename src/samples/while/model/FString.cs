@@ -40,7 +40,12 @@ public class FString : Expression
 
     public Emit<Func<int>> EmitByteCode(CompilerContext context, Emit<Func<int>> emiter)
     {
-        throw new NotImplementedException();
+        if (Elements.Count == 1)
+        {
+            return Elements[0].EmitByteCode(context, emiter);
+        }
+
+        return null;
     }
 
     public WhileType Whiletype { get; set; } = WhileType.STRING;

@@ -51,6 +51,13 @@ public class FStringElement : WhileAST
 
     public Emit<Func<int>> EmitByteCode(CompilerContext context, Emit<Func<int>> emiter)
     {
-        throw new NotImplementedException();
+        if (IsStringElement)
+        {
+            return StringElement.EmitByteCode(context, emiter);
+        }
+        else
+        {
+            return VariableElement.EmitByteCode(context, emiter);
+        }
     }
 }
