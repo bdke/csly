@@ -29,6 +29,11 @@ namespace csly.whileLang.compiler
                 return varType;
             }
 
+            if (expr is FString fstring)
+            {
+                return WhileType.STRING;
+            }
+
             throw new SignatureException($"unknow expression type ({expr.GetType().Name})");
         }
 

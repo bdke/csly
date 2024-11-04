@@ -143,6 +143,27 @@ namespace csly.indentedWhileLang.parser
 
         #region OPERANDS
 
+        // fstrings 
+        [Production("primary : OPEN_FSTRING[d] fstring_element* CLOSE_FSTRING[d]")]
+        public WhileAST fstring(List<WhileAST> elements)
+        {
+            var fstring = new FString(elements.Cast<FStringElement>().ToList(), elements.First().Position);
+            return fstring;
+        }
+
+        [Production("fstring_element : FSTRING_CONTENT")]
+        public WhileAST FStringContent(Token<IndentedWhileTokenGeneric> element)
+        {
+            return new FStringElement(new StringConstant(element.Value),element.Position);
+        }
+        
+        [Production("fstring_element : OPEN_FSTRING_EXPPRESSION[d] IDENTIFIER CLOSE_FSTRING_EXPPRESSION[d]")]
+        public WhileAST FStringExpression(Token<IndentedWhileTokenGeneric> element)
+        {
+            return new FStringElement(new Variable(element.Value),element.Position);
+        }
+        
+        
         [Production("primary: INT")]
         public WhileAST PrimaryInt(Token<IndentedWhileTokenGeneric> intToken)
         {
@@ -156,11 +177,11 @@ namespace csly.indentedWhileLang.parser
             return new BoolConstant(bool.Parse(boolToken.StringWithoutQuotes));
         }
 
-        [Production("primary: STRING")]
-        public WhileAST PrimaryString(Token<IndentedWhileTokenGeneric> stringToken)
-        {
-            return new StringConstant(stringToken.StringWithoutQuotes);
-        }
+        // [Production("primary: STRING")]
+        // public WhileAST PrimaryString(Token<IndentedWhileTokenGeneric> stringToken)
+        // {
+        //     return new StringConstant(stringToken.StringWithoutQuotes);
+        // }
 
         [Production("primary: IDENTIFIER")]
         public WhileAST PrimaryId(Token<IndentedWhileTokenGeneric> varToken)

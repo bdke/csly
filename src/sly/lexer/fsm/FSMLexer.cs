@@ -314,18 +314,22 @@ namespace sly.lexer.fsm
                 {
                     case LexerIndentationType.Indent:
                     {
+                        var position = lexerPosition.Clone();
+                        position.IsPush = false;
+                        position.IsPop = false;
+                        position.Mode = null;
                         var indent = FSMMatch<N>.Indent(lexerPosition.Indentation.CurrentLevel);
                         indent.Result = new Token<N>
                         {
                             IsIndent = true,
                             IsUnIndent = false,
                             IsNoIndent = false,
-                            Position = lexerPosition.Clone()
+                            Position = position
                         };
                         indent.IsNoIndent = false;
                         indent.IsIndent = true;
                         indent.IsUnIndent = false;
-                        indent.NewPosition = lexerPosition.Clone();
+                        indent.NewPosition = position;
                         indent.NewPosition.Index += currentShift.Length;
                         indent.NewPosition.Column += currentShift.Length;
                         return indent;
@@ -333,17 +337,21 @@ namespace sly.lexer.fsm
                     case LexerIndentationType.UIndent:
                     {
                         var uIndent = FSMMatch<N>.UIndent(lexerPosition.Indentation.CurrentLevel);
+                        var position = lexerPosition.Clone();
+                        position.IsPush = false;
+                        position.IsPop = false;
+                        position.Mode = null;
                         uIndent.Result = new Token<N>
                         {
                             IsIndent = false,
                             IsUnIndent = true,
                             IsNoIndent = false,
-                            Position = lexerPosition.Clone()
+                            Position = position
                         };
                         uIndent.IsNoIndent = false;
                         uIndent.IsIndent = false;
                         uIndent.IsUnIndent = true;
-                        uIndent.NewPosition = lexerPosition.Clone();
+                        uIndent.NewPosition = position;
                         uIndent.NewPosition.Index += currentShift.Length;
                         uIndent.NewPosition.Column += currentShift.Length;
                         return uIndent;
