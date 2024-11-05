@@ -10,7 +10,7 @@ public class Program
 
     private static Parser<SlowOnBadParseEosToken, object> GetParser(object instance)
     {
-        ParserBuilder<SlowOnBadParseEosToken, object> builder = new ParserBuilder<SlowOnBadParseEosToken, object>();
+        ParserBuilder<SlowOnBadParseEosToken, object> builder = new ParserBuilder<SlowOnBadParseEosToken, object>("en");
         
         var buildBaseLine = builder.BuildParser(instance, ParserType.EBNF_LL_RECURSIVE_DESCENT, "root");
         if (buildBaseLine.IsOk)

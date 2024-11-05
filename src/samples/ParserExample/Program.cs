@@ -24,6 +24,7 @@ using ParserTests.Issue332;
 using ParserTests.Issue414;
 using ParserTests.Issue495;
 using ParserTests.lexer;
+using ParserTests.samples;
 using simpleExpressionParser;
 using SimpleTemplate;
 using SimpleTemplate.model;
@@ -1352,7 +1353,8 @@ while a < 10 do
         }
         private static void Main(string[] args)
         {
-            TestIssue495();
+            TestFStrings();
+            //TestIssue495();
             //testGenericLexerJson();
             // TestIssue487();
             //BenchSimpleExpression();
@@ -1833,6 +1835,12 @@ else
               Check.That(parsed).IsOkParsing();
               Check.That(parsed.Result).IsEqualTo("test=3 3");
 
+          }
+
+          private static void TestFStrings()
+          {
+              IndentedWhileTests tests = new IndentedWhileTests();
+              tests.TestFString();
           }
     }
 

@@ -114,7 +114,6 @@ namespace sly.lexer.fsm
             return transition;
         }
 
-
         public void AddTransition(FSMTransition transition)
         {
             var transitions = new List<FSMTransition>();
@@ -252,17 +251,29 @@ namespace sly.lexer.fsm
 
             if (result != null)
             {
+                if ((result.Result as Token<GenericToken>).TokenID == GenericToken.UpTo)
+                {
+                    if (ignoredTokens.Count > 0)
+                    {
+                        int ignoredLength = ignoredTokens.Select(x => x.SpanValue.Length).Sum();
+                        int start = result.Result.Position.Index - ignoredLength; 
+                        result.Result.Position.Index  -= ignoredLength;
+                        var value = source.Slice(start, ignoredLength+result.Result.SpanValue.Length);
+                        result.Result.SpanValue = value;
+                    }
+                }
                 // Backtrack
                 var length = result.Result.Value.Length;
                 lexerPosition.Index = result.Result.Position.Index + length;
                 lexerPosition.Column = result.Result.Position.Column + length;
+                result.IgnoredTokens = ignoredTokens;
 
                 if (HasCallback(result.NodeId))
                 {
                     result = Callbacks[result.NodeId](result);
                 }
 
-                result.IgnoredTokens = ignoredTokens;
+                
                 return result;
             }
 

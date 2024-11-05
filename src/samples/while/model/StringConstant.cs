@@ -7,9 +7,10 @@ namespace csly.whileLang.model
 {
     public class StringConstant : Expression
     {
-        public StringConstant(string value)
+        public StringConstant(string value, LexerPosition position)
         {
             Value = value;
+            Position = position;
         }
 
         public string Value { get; set; }

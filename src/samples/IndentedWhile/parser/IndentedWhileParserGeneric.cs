@@ -143,24 +143,49 @@ namespace csly.indentedWhileLang.parser
 
         #region OPERANDS
 
+        public BinaryOperation BuildConcat(List<Expression> operands)
+        {
+            if (operands.Count == 1)
+            {
+                var operation = new BinaryOperation(operands[0], BinaryOperator.CONCAT, new StringConstant("",null));
+                return operation;
+            }
+            else if (operands.Count == 2)
+            {
+                var operation = new BinaryOperation(operands[0], BinaryOperator.CONCAT, operands[1]);
+                return operation;
+            }
+            else if (operands.Count > 2)
+            {
+                var right = BuildConcat(operands.Skip(1).ToList());
+                var operation = new BinaryOperation(operands[0], BinaryOperator.CONCAT, right);
+                return operation;
+            }
+
+            return null;
+        }
+        
         // fstrings 
         [Production("primary : OPEN_FSTRING[d] fstring_element* CLOSE_FSTRING[d]")]
         public WhileAST fstring(List<WhileAST> elements)
         {
-            var fstring = new FString(elements.Cast<FStringElement>().ToList(), elements.First().Position);
-            return fstring;
+            if (elements.Count == 1)
+            {
+                return elements[0];
+            }
+            return BuildConcat(elements.Cast<Expression>().ToList());
         }
 
         [Production("fstring_element : FSTRING_CONTENT")]
         public WhileAST FStringContent(Token<IndentedWhileTokenGeneric> element)
         {
-            return new FStringElement(new StringConstant(element.Value),element.Position);
+            return new StringConstant(element.Value,element.Position);
         }
         
-        [Production("fstring_element : OPEN_FSTRING_EXPPRESSION[d] IDENTIFIER CLOSE_FSTRING_EXPPRESSION[d]")]
-        public WhileAST FStringExpression(Token<IndentedWhileTokenGeneric> element)
+        [Production("fstring_element : OPEN_FSTRING_EXPPRESSION[d] IndentedWhileParserGeneric_expressions CLOSE_FSTRING_EXPPRESSION[d]")]
+        public WhileAST FStringExpression(WhileAST expression)
         {
-            return new FStringElement(new Variable(element.Value),element.Position);
+            return expression;
         }
         
         

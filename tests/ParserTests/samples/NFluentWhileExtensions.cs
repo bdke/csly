@@ -7,11 +7,22 @@ namespace ParserTests.samples
 {
     public static class NFluentWhileExtensions
     {
-        public static ICheckLink<ICheck<InterpreterContext>> HasVariableWithValue(this ICheck<InterpreterContext> context, string variableName, int expectedValue) 
+        public static ICheckLink<ICheck<InterpreterContext>> HasVariableWithIntValue(this ICheck<InterpreterContext> context, string variableName, int expectedValue) 
         {
             ExtensibilityHelper.BeginCheck(context)
                 .FailWhen(sut => sut.GetVariable(variableName) == null, "expecting {expected} but variable not found.")
                 .FailWhen(sut => sut.GetVariable(variableName).IntValue != expectedValue, "expecting {expected} found {checked}.")
+                .OnNegate("variable is ok")
+                .DefineExpectedValue($"{variableName}={expectedValue}")
+                .EndCheck();
+            return ExtensibilityHelper.BuildCheckLink(context);
+        }
+        
+        public static ICheckLink<ICheck<InterpreterContext>> HasVariableWithStringValue(this ICheck<InterpreterContext> context, string variableName, string expectedValue) 
+        {
+            ExtensibilityHelper.BeginCheck(context)
+                .FailWhen(sut => sut.GetVariable(variableName) == null, "expecting {expected} but variable not found.")
+                .FailWhen(sut => sut.GetVariable(variableName).StringValue != expectedValue, "expecting {expected} found {checked}.")
                 .OnNegate("variable is ok")
                 .DefineExpectedValue($"{variableName}={expectedValue}")
                 .EndCheck();

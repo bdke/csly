@@ -221,8 +221,6 @@ namespace sly.lexer
                     tokens.Add(transcoded);
                 }
 
-                
-
                 r = LexerFsm.Run(source, position);
                 if (r.IsNoIndent)
                 {

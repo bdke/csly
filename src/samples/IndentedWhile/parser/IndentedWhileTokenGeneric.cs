@@ -60,28 +60,36 @@ namespace csly.indentedWhileLang.parser
 
         #region operators 30 -> 49
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, ">")] GREATER = 30,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "<")] LESSER = 31,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "==")]
         EQUALS = 32,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "!=")]
         DIFFERENT = 33,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, ".")] CONCAT = 34,
 
-        [Lexeme(GenericToken.SugarToken, ":=")]
-        ASSIGN = 35,
+        
+        [Lexeme(GenericToken.SugarToken, ":=")] ASSIGN = 35,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "+")] PLUS = 36,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "-")] MINUS = 37,
 
-
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "*")] TIMES = 38,
 
+        [Mode(ModeAttribute.DefaultLexerMode, "fstringExpression")]
         [Lexeme(GenericToken.SugarToken, "/")] DIVIDE = 39,
 
         #endregion

@@ -91,7 +91,7 @@ while a < 10 do
             var interpreter = new Interpreter();
             var context = interpreter.Interprete(result.Result, true);
             Check.That(context.variables).IsSingle();
-            Check.That(context).HasVariableWithValue("a", 10);
+            Check.That(context).HasVariableWithIntValue("a", 10);
             
         }
 
@@ -115,8 +115,8 @@ while i < 11 do
             var interpreter = new Interpreter();
             var context = interpreter.Interprete(result.Result, true);
             Check.That(context.variables).CountIs(2);
-            Check.That(context).HasVariableWithValue("i", 11);
-            Check.That(context).HasVariableWithValue("r", 3628800);
+            Check.That(context).HasVariableWithIntValue("i", 11);
+            Check.That(context).HasVariableWithIntValue("r", 3628800);
         }
 
 
@@ -170,15 +170,10 @@ else
             Check.That(thenBlock.Get(0)).IsInstanceOf<AssignStatement>();
             var thenAssign = thenBlock.Get(0) as AssignStatement;
             Check.That(thenAssign.VariableName).IsEqualTo("a");
-            Check.That(thenAssign.Value).IsInstanceOf<FString>();
-            var fstring = thenAssign.Value as FString;
+            Check.That(thenAssign.Value).IsInstanceOf<StringConstant>();
+            var fstring = thenAssign.Value as StringConstant;
             Check.That(fstring).IsNotNull();
-            Check.That(fstring.Elements).CountIs(1);
-            Check.That(fstring.Elements[0]).IsInstanceOf<FStringElement>();
-            var element = fstring.Elements[0] as FStringElement;
-            Check.That(element).IsNotNull();
-            Check.That(element.IsStringElement).IsTrue();
-            Check.That(element.StringElement.Value).IsEqualTo("hello");
+            Check.That(fstring.Value).IsEqualTo("hello");
 
             Check.That(si.ElseStmt).IsInstanceOf<SequenceStatement>();
             var elseBlock = si.ElseStmt as SequenceStatement;
@@ -186,15 +181,10 @@ else
             Check.That(elseBlock.Get(0)).IsInstanceOf<AssignStatement>();
             var elseAssign = elseBlock.Get(0) as AssignStatement;
             Check.That(elseAssign.VariableName).IsEqualTo("b");
-            Check.That(elseAssign.Value).IsInstanceOf<FString>();
-            fstring = elseAssign.Value as FString;
+            Check.That(elseAssign.Value).IsInstanceOf<StringConstant>();
+            fstring = elseAssign.Value as StringConstant;
             Check.That(fstring).IsNotNull();
-            Check.That(fstring.Elements).CountIs(1);
-            Check.That(fstring.Elements[0]).IsInstanceOf<FStringElement>();
-            element = fstring.Elements[0] as FStringElement;
-            Check.That(element).IsNotNull();
-            Check.That(element.IsStringElement).IsTrue();
-            Check.That(element.StringElement.Value).IsEqualTo("world");
+            Check.That(fstring.Value).IsEqualTo("world");
         }
 
         [Fact]
@@ -245,18 +235,16 @@ fstring := $""{v1} - content - {v2} - end""
             var fstringAssign = seq.Get(2) as AssignStatement;
             Check.That(fstringAssign).IsNotNull();
             Check.That(fstringAssign.VariableName).IsEqualTo("fstring");
-            Check.That(fstringAssign.Value).IsInstanceOf<FString>();
-            var fString = fstringAssign.Value as FString;
-            Check.That(fString).IsNotNull();
-            Check.That(fString.Elements).CountIs(4);
-            Check.That(fString.Elements[0]).IsInstanceOf<FStringElement>();
-            Check.That((fString.Elements[0] as FStringElement).IsVariable);
-            Check.That(fString.Elements[1]).IsInstanceOf<FStringElement>();
-            Check.That((fString.Elements[1] as FStringElement).IsStringElement);
-            Check.That(fString.Elements[2]).IsInstanceOf<FStringElement>();
-            Check.That((fString.Elements[2] as FStringElement).IsVariable);
-            Check.That(fString.Elements[3]).IsInstanceOf<FStringElement>();
-            Check.That((fString.Elements[3] as FStringElement).IsStringElement);
+            Check.That(fstringAssign.Value).IsInstanceOf<BinaryOperation>();
+            var fString = fstringAssign.Value as BinaryOperation;
+            Check.That(fString.Operator).IsEqualTo(BinaryOperator.CONCAT);
+            var interpreter = new Interpreter();
+            var context = interpreter.Interprete(result.Result, true);
+            Check.That(context.variables).CountIs(3);
+            Check.That(context).HasVariableWithIntValue("v1", 1);
+            Check.That(context).HasVariableWithIntValue("v2", 2);
+            Check.That(context).HasVariableWithStringValue("fstring", "1 - content - 2 - end");
+            
         }
 
         [Fact]

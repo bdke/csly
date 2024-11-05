@@ -28,12 +28,6 @@ namespace csly.whileLang.compiler
                 variable.CompilerScope = context.CurrentScope;
                 return varType;
             }
-
-            if (expr is FString fstring)
-            {
-                return WhileType.STRING;
-            }
-
             throw new SignatureException($"unknow expression type ({expr.GetType().Name})");
         }
 
