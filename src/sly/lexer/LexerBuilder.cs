@@ -267,7 +267,7 @@ namespace sly.lexer
                     {
                         foreach (var lexeme in lexemes.lexemes)
                         {
-                            var channel = lexeme.Channel.HasValue ? lexeme.Channel.Value : 0;
+                            var channel = lexeme.Channel == int.MinValue ? 0 : lexeme.Channel;
                             lexer.AddDefinition(new TokenDefinition<IN>(tokenID, lexeme.Pattern, channel,
                                 lexeme.IsSkippable,
                                 lexeme.IsLineEnding));

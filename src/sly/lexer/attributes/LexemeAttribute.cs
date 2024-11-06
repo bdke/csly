@@ -62,8 +62,8 @@ namespace sly.lexer
         public bool IsSkippable { get; set; }
 
         public bool IsLineEnding { get; set; }
-        
-        public int? Channel { get; set; }
+
+        public int Channel { get; set; } = int.MinValue;
 
 
         public bool HasGenericTokenParameters => GenericTokenParameters != null && GenericTokenParameters.Length > 0;
